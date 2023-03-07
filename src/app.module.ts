@@ -6,17 +6,20 @@ import { DatabaseModule } from './database/database.module'
 import { UsersModule } from './app/users/users.module'
 import { AuthModule } from './app/auth/auth.module'
 import { ApolloModule } from './apollo/apollo.module'
+import { StoriesModule } from './app/stories/stories.module';
+import { CategoriesModule } from './app/categories/categories.module';
+import { AuthorsModule } from './app/authors/authors.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     ApolloModule,
-    // DevtoolsModule.register({
-    //   http: process.env.NODE_ENV !== 'production'
-    // }),
     DatabaseModule,
     UsersModule,
-    AuthModule
+    AuthModule,
+    StoriesModule,
+    CategoriesModule,
+    AuthorsModule
   ],
   controllers: [AppController],
   providers: [AppService]

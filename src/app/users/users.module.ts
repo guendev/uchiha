@@ -4,7 +4,7 @@ import { UsersController } from './users.controller'
 import { MongooseModule } from '@nestjs/mongoose'
 import { User, UserEntity } from './entities/user.entity'
 import { UsersResolver } from './users.resolver'
-import { AuthModule } from "../auth/auth.module";
+import { AuthModule } from '../auth/auth.module'
 
 @Global()
 @Module({
