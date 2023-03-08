@@ -27,7 +27,7 @@ export class CoreService<T extends CoreDocument> {
     const sort = options?.toMongoSort || PaginationFilter.defaultSort
     const queryBuilder = this.model.find(query).sort(sort)
 
-    if (options) {
+    if (!options) {
       return queryBuilder.exec()
     }
     const { offset, limit } = options
