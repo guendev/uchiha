@@ -71,6 +71,13 @@ input CreateTagInput {
   name: String!
 }
 
+input GetAuthorsFilter {
+  limit: Int!
+  name: String
+  offset: Int!
+  sort: String!
+}
+
 input GetCategoriesFilter {
   limit: Int!
   name: String
@@ -85,6 +92,7 @@ type Mutation {
   removeCategory(input: RemoveCategoryInput!): Category!
   signIn(input: SignInInput!): String!
   signUp(input: SignUpInput!): String!
+  updateAuthor(input: UpdateAuthorInput!): Author!
   updateCategory(input: UpdateCategoryInput!): Category!
 }
 
@@ -96,6 +104,7 @@ type Notify {
 }
 
 type Query {
+  authors(filter: GetAuthorsFilter!): [Author!]!
   categories(filter: GetCategoriesFilter!): [Category!]!
   me: User!
 }
@@ -126,6 +135,12 @@ type Tag {
   name: String!
   slug: String!
   updatedAt: Float!
+}
+
+input UpdateAuthorInput {
+  description: String = ""
+  id: ID!
+  name: String
 }
 
 input UpdateCategoryInput {
