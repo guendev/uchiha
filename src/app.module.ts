@@ -13,6 +13,7 @@ import { TagsModule } from './app/tags/tags.module'
 import { AppResolver } from '~/app.resolver'
 import { NotifyModule } from './app/notify/notify.module'
 import { PubSubModule } from '~/apollo/pubsub.module'
+import { DevtoolsModule } from '@nestjs/devtools-integration'
 
 @Module({
   imports: [
@@ -26,7 +27,10 @@ import { PubSubModule } from '~/apollo/pubsub.module'
     AuthorsModule,
     TagsModule,
     NotifyModule,
-    PubSubModule
+    PubSubModule,
+    DevtoolsModule.register({
+      http: process.env.NODE_ENV !== 'production'
+    })
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver]

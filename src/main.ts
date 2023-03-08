@@ -5,7 +5,9 @@ import { ConfigService } from '@nestjs/config'
 import { exec } from 'child_process'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule, {
+    snapshot: true
+  })
   app.enableCors()
   app.use(cookieParser())
 
