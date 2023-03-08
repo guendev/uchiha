@@ -2,7 +2,7 @@ import { Core, CoreDocument } from '@app/core'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Field, ObjectType } from '@nestjs/graphql'
 
-export type AuthorDocument = Author & CoreDocument
+export type TagDocument = Tag & CoreDocument
 
 @ObjectType()
 @Schema({
@@ -15,12 +15,12 @@ export type AuthorDocument = Author & CoreDocument
     getters: true
   }
 })
-export class Author extends Core {
+export class Tag extends Core {
   @Field(() => String)
   @Prop({ required: true })
   name: string
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop({ type: String })
   description: string
 
@@ -29,4 +29,4 @@ export class Author extends Core {
   slug: string
 }
 
-export const AuthorEntity = SchemaFactory.createForClass(Author)
+export const TagEntity = SchemaFactory.createForClass(Tag)

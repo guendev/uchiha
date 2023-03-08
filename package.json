@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -17,7 +17,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "apollo:build": "npx apollo client:download-schema --endpoint=http://localhost:3001/graphql schema.graphql",
+    "apollo:commit": "APOLLO_KEY=service:Uchiha:z-3977rx-RW4Dkzz7mAD6A \\\n  rover subgraph publish Uchiha@current \\\n  --schema ./schema.graphql \\\n  --name main \\\n  --routing-url http://products.prod.svc.cluster.local:4001/graphql"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.2.0",
@@ -43,7 +45,8 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "0.1.13",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.2.0",

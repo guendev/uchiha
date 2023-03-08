@@ -1,36 +1,51 @@
-import { Types } from 'mongoose'
-import { Injectable } from '@nestjs/common'
 import {
   registerDecorator,
-  ValidationArguments,
   ValidationOptions,
-  ValidatorConstraint,
-  ValidatorConstraintInterface
+  ValidationArguments
 } from 'class-validator'
+import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common'
+import { ObjectId } from 'mongodb'
 
-@ValidatorConstraint({ name: 'IsObjectID' })
 @Injectable()
-export class IsObjectIDRule implements ValidatorConstraintInterface {
-  validate(value: string | string[]) {
-    // return Types.ObjectId.isValid(value)
-    return Array.isArray(value)
-      ? value.every((v) => Types.ObjectId.isValid(v))
-      : Types.ObjectId.isValid(value)
-  }
-
-  defaultMessage(args: ValidationArguments) {
-    return `${args.property} not a ObjectID`
+export class ObjectIdPipe implements PipeTransform {
+  transform(value: any, metadata?: any) {
+    const isValidObjectId = ObjectId.isValid(value)
+    if (!isValidObjectId) {
+      throw new BadRequestException('Invalid ObjectId')
+    }
+    return new ObjectId(value)
   }
 }
 
-export function IsObjectID(validationOptions?: ValidationOptions) {
+export function IsMongoId(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
     registerDecorator({
-      name: 'IsObjectID',
+      name: 'isMongoId',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: IsObjectIDRule
+      validator: {
+        validate(value) {
+          if (Array.isArray(value)) {
+            return value.every((id: string) => ObjectId.isValid(id))
+          }
+          return ObjectId.isValid(value)
+        },
+        defaultMessage(args: ValidationArguments) {
+          return `Invalid MongoDB ObjectID in ${args.property}`
+        }
+      }
     })
+  }
+}
+
+export function toMongoObjectIds(value): ObjectId | ObjectId[] {
+  const transformMongoId = new ObjectIdPipe()
+  if (typeof value === 'string') {
+    return transformMongoId.transform(value)
+  } else if (Array.isArray(value)) {
+    return value.map((id) => transformMongoId.transform(id))
+  } else {
+    return value
   }
 }

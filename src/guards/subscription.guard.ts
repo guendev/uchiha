@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'
 import { Observable } from 'rxjs'
-import { UserSubscriptionExtract } from '../shared/extract/user-subscription.extract'
+import { UserSubscriptionExtract } from '~/shared/extract/user-subscription.extract'
 
 @Injectable()
 export class SubscriptionGuard implements CanActivate {

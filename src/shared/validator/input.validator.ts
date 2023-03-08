@@ -1,23 +1,20 @@
 import { ValidationError, ValidationPipe } from '@nestjs/common'
 import { UserInputError } from 'apollo-server-express'
+import { ValidationPipeOptions } from '@nestjs/common/pipes/validation.pipe'
 
 export class InputValidator extends ValidationPipe {
-  constructor() {
+  constructor(options: ValidationPipeOptions = {}) {
     super({
-      transform: true,
-      exceptionFactory: (errors: ValidationError[]) => {
-        const _errorsBuilder = (_errors: ValidationError[]) => {
-          return _errors.reduce((rv, x) => {
-            ;(rv[x.property] = rv[x.property] || []).push(
-              x.constraints ? x.constraints : _errorsBuilder(x.children)
-            )
-            return rv
-          }, {} as ValidationError)
-        }
-
-        const _errors = _errorsBuilder(errors)
-
-        return new UserInputError('Đầu vào không hợp lệ', _errors)
+      ...options,
+      exceptionFactory(errors: ValidationError[]) {
+        const formattedErrors = errors.map((error) => {
+          const constraints = error.constraints
+          const key = Object.keys(constraints)[0]
+          return { field: error.property, message: constraints[key] }
+        })
+        return new UserInputError('Validation failed', {
+          errors: formattedErrors
+        })
       }
     })
   }

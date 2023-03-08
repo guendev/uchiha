@@ -6,9 +6,13 @@ import { DatabaseModule } from './database/database.module'
 import { UsersModule } from './app/users/users.module'
 import { AuthModule } from './app/auth/auth.module'
 import { ApolloModule } from './apollo/apollo.module'
-import { StoriesModule } from './app/stories/stories.module';
-import { CategoriesModule } from './app/categories/categories.module';
-import { AuthorsModule } from './app/authors/authors.module';
+import { StoriesModule } from './app/stories/stories.module'
+import { CategoriesModule } from './app/categories/categories.module'
+import { AuthorsModule } from './app/authors/authors.module'
+import { TagsModule } from './app/tags/tags.module'
+import { AppResolver } from '~/app.resolver'
+import { NotifyModule } from './app/notify/notify.module'
+import { PubSubModule } from '~/apollo/pubsub.module'
 
 @Module({
   imports: [
@@ -19,9 +23,12 @@ import { AuthorsModule } from './app/authors/authors.module';
     AuthModule,
     StoriesModule,
     CategoriesModule,
-    AuthorsModule
+    AuthorsModule,
+    TagsModule,
+    NotifyModule,
+    PubSubModule
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService, AppResolver]
 })
 export class AppModule {}
